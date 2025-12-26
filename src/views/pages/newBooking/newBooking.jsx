@@ -1,20 +1,17 @@
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { baseUrl } from '../../../api/api'
 import {
-  CContainer,
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CButton,
-  CFormSelect,
-  CInputGroup,
-  CInputGroupText,
-  CAlert,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilUser } from '@coreui/icons'
-import { Formik, Form, Field } from 'formik'
+  Container,
+  Card,
+  CardContent,
+  CardHeader,
+  Button,
+  TextField,
+  MenuItem,
+  Alert,
+  Stack,
+} from '@mui/material'
+import { Formik, Form } from 'formik'
 import { useState } from 'react'
 import CustomInput from '../../../components/CustomInput/CustomInput'
 
@@ -24,14 +21,14 @@ const NewBooking = () => {
 
   const handleAddBooking = async (values) => {
     try {
-      await axios.post(`${baseUrl}/booking/add`, {
-        pickup_address: values.pickupAddress,
-        delivery_address: values.deliveryAddress,
-        payment_method: values.paymentMethod,
-        size_type: values.sizeType,
+      await baseUrl.post('/booking/add', {
+        pickupAddress: values.pickupAddress,
+        deliveryAddress: values.deliveryAddress,
+        paymentType: values.paymentType,
+        sizeType: values.sizeType,
       })
 
-      navigate('/bookings')
+      navigate('/')
     } catch (err) {
       console.error('Error:', err)
       setError('Failed to create booking')
@@ -39,64 +36,86 @@ const NewBooking = () => {
   }
 
   return (
-    <CContainer className="mt-5" style={{ maxWidth: '500px' }}>
-      <CCard>
-        <CCardHeader className="text-center fw-bold">Add New Booking</CCardHeader>
+    <Container maxWidth="sm" sx={{ mt: 5 }}>
+      <Card>
+        <CardHeader
+          title="Book New Courier"
+          titleTypographyProps={{ align: 'center', fontWeight: 'bold' }}
+        />
 
-        <CCardBody>
+        <CardContent>
           <Formik
             initialValues={{
               pickupAddress: '',
               deliveryAddress: '',
-              paymentMethod: '',
+              paymentType: '',
               sizeType: '',
             }}
             onSubmit={handleAddBooking}
           >
-            {() => (
-              <Form className="d-flex flex-column gap-3">
-                <CustomInput
-                  label="Pickup Address"
-                  name="pickupAddress"
-                  placeholder="Enter pickup address"
-                  type="text"
-                />
+            {({ values, handleChange }) => (
+              <Form>
+                <Stack spacing={3}>
+                  <CustomInput
+                    label="Pickup Address"
+                    name="pickupAddress"
+                    placeholder="Enter pickup address"
+                    type="text"
+                  />
 
-                <CustomInput
-                  label="Delivery Address"
-                  name="deliveryAddress"
-                  placeholder="Enter delivery address"
-                  type="text"
-                />
+                  <CustomInput
+                    label="Delivery Address"
+                    name="deliveryAddress"
+                    placeholder="Enter delivery address"
+                    type="text"
+                  />
+                  <TextField
+                    select
+                    label="Payment Method"
+                    name="paymentType"
+                    value={values.paymentType}
+                    onChange={handleChange}
+                    fullWidth
+                  >
+                    <MenuItem value="">Select Payment Method</MenuItem>
+                    <MenuItem value="cod">Cash On Delivery</MenuItem>
+                    <MenuItem value="prepaid">Prepaid</MenuItem>
+                  </TextField>
+                  <TextField
+                    select
+                    label="Parcel Size"
+                    name="sizeType"
+                    value={values.sizeType}
+                    onChange={handleChange}
+                    fullWidth
+                  >
+                    <MenuItem value="">Select Parcel Size</MenuItem>
+                    <MenuItem value="sm">Small</MenuItem>
+                    <MenuItem value="md">Medium</MenuItem>
+                    <MenuItem value="lg">Large</MenuItem>
+                  </TextField>
 
-                <CInputGroup className="mb-3">
-                  <Field as={CFormSelect} name="paymentMethod">
-                    <option value="">Select Payment Method</option>
-                    <option value="cod">Cash On Delivery</option>
-                    <option value="prepaid">Prepaid</option>
-                  </Field>
-                </CInputGroup>
+                  <Alert severity="success">
+                    Small parcels (less than 1kg) delivery charge: <strong>100 TK</strong>
+                    <br />
+                    Medium parcels (1kg-10kg) delivery charge: <strong>200 TK</strong>
+                    <br />
+                    Large parcels (more than 10kg) delivery charge: <strong>300 TK</strong>
+                    <br />
+                  </Alert>
 
-                <CInputGroup className="mb-3">
-                  <Field as={CFormSelect} name="sizeType">
-                    <option value="">Select Parcel Size</option>
-                    <option value="sm">Small</option>
-                    <option value="md">Medium</option>
-                    <option value="lg">Large</option>
-                  </Field>
-                </CInputGroup>
+                  {error && <Alert severity="error">{error}</Alert>}
 
-                {error && <CAlert color="danger">{error}</CAlert>}
-
-                <CButton type="submit" color="primary">
-                  Submit
-                </CButton>
+                  <Button type="submit" variant="contained" size="large">
+                    Submit
+                  </Button>
+                </Stack>
               </Form>
             )}
           </Formik>
-        </CCardBody>
-      </CCard>
-    </CContainer>
+        </CardContent>
+      </Card>
+    </Container>
   )
 }
 

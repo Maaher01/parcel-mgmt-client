@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -7,8 +6,6 @@ import {
   CCardGroup,
   CCol,
   CContainer,
-  CForm,
-  CFormInput,
   CInputGroup,
   CInputGroupText,
   CRow,
@@ -17,7 +14,6 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilEnvelopeClosed } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { useContext, useState } from 'react'
 import { Form, Formik } from 'formik'
 import CustomInput from '../../../components/CustomInput/CustomInput'

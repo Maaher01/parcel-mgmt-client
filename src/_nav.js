@@ -24,9 +24,33 @@ export const Navigation = () => {
         {
           component: CNavItem,
           name: 'My Bookings',
-          to: '/',
+          to: '/booking',
         },
       ],
+    },
+    {
+      component: CNavItem,
+      name: 'Agent Assign',
+      to: '/created-bookings',
+      icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    },
+    {
+      component: CNavItem,
+      name: 'User Directory',
+      to: '/users',
+      icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    },
+    {
+      component: CNavItem,
+      name: 'Bookings',
+      to: '/bookings',
+      icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    },
+    {
+      component: CNavItem,
+      name: 'Assigned Parcels',
+      to: '/assigned-parcels',
+      icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     },
   ]
 
