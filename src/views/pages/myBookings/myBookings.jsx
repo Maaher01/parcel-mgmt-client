@@ -13,10 +13,13 @@ import {
   Chip,
   CircularProgress,
   Alert,
+  IconButton,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { baseUrl } from '../../../api/api'
 import { format } from 'date-fns'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import { Link } from 'react-router-dom'
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([])
@@ -57,6 +60,12 @@ const MyBookings = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>
+                    <b>Action</b>
+                  </TableCell>
+                  <TableCell>
+                    <b>Booking ID</b>
+                  </TableCell>
+                  <TableCell>
                     <b>Pickup Address</b>
                   </TableCell>
                   <TableCell>
@@ -86,6 +95,14 @@ const MyBookings = () => {
                 ) : (
                   bookings.map((booking, index) => (
                     <TableRow key={index}>
+                      <TableCell>
+                        <Link to={`/booking/${booking.bookingId}`}>
+                          <IconButton>
+                            <VisibilityIcon color="primary" />
+                          </IconButton>
+                        </Link>
+                      </TableCell>
+                      <TableCell>{booking.bookingId}</TableCell>
                       <TableCell>{booking.pickupAddress}</TableCell>
                       <TableCell>{booking.deliveryAddress}</TableCell>
                       <TableCell>

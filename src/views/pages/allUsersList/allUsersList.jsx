@@ -46,7 +46,7 @@ const AllUsersList = () => {
 
   const handleExportCsv = () => {
     const formatted = users.map((u) => ({
-      UserID: u.userId,
+      UserID: u.user_id,
       Name: u.name,
       Email: u.email,
       Role: u.role,

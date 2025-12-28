@@ -7,6 +7,7 @@ const createdBookings = React.lazy(() => import('./views/pages/createdBookings/c
 const allUsersList = React.lazy(() => import('./views/pages/allUsersList/allUsersList'))
 const allBookingsList = React.lazy(() => import('./views/pages/allBookingsList/allBookingsList'))
 const assignedBookings = React.lazy(() => import('./views/pages/assignedBookings/assignedBookings'))
+const bookingDetails = React.lazy(() => import('./views/pages/bookingDetails/bookingDetails'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -17,6 +18,7 @@ const routes = [
   { path: '/users', name: 'All Users List', element: allUsersList },
   { path: '/bookings', name: 'All Bookings List', element: allBookingsList },
   { path: '/assigned-parcels', name: 'Assigned Bookings', element: assignedBookings },
+  { path: '/booking/:bookingId', name: 'Booking Details', element: bookingDetails },
 ]
 
 export default routes

@@ -18,9 +18,11 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { baseUrl } from '../../../api/api'
 import { format } from 'date-fns'
+import { startTracking, stopTracking } from '../../../utils/tracking'
+import AuthContext from '../../../context/AuthContext'
 
 const AssignedBookings = () => {
   const [bookings, setBookings] = useState([])
@@ -28,6 +30,8 @@ const AssignedBookings = () => {
   const [error, setError] = useState('')
   const [anchorEl, setAnchorEl] = useState(null)
   const [selectedBookingId, setSelectedBookingId] = useState(null)
+
+  const { token } = useContext(AuthContext)
 
   const menuOpen = Boolean(anchorEl)
 
@@ -50,6 +54,16 @@ const AssignedBookings = () => {
       await baseUrl.patch(`/agent/edit-booking-status/${selectedBookingId}`, { bookingStatus })
 
       fetchAssignedBookings()
+
+      // Start tracking if status is PICKED_UP
+      if (bookingStatus === 'PICKED_UP') {
+        startTracking(selectedBookingId, token)
+      }
+
+      // Optionally stop tracking when DELIVERED or CANCELLED
+      if (['DELIVERED', 'CANCELLED'].includes(bookingStatus)) {
+        stopTracking()
+      }
     } catch (err) {
       console.error('Failed to update status')
     } finally {
