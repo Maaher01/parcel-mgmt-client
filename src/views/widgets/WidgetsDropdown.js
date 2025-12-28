@@ -3,15 +3,13 @@ import PropTypes from 'prop-types'
 import { CRow, CCol, CWidgetStatsA } from '@coreui/react'
 import { getStyle } from '@coreui/utils'
 import { baseUrl } from '../../api/api'
-import AuthContext from '../../context/AuthContext'
+import RequireRole from '../../routes/RequireRole'
 
 const WidgetsDropdown = (props) => {
   const [error, setError] = useState('')
   const [dailyCODAmount, setDailyCODAmount] = useState(0)
   const [dailyBookings, setDailyBookings] = useState(0)
   const [failedBookings, setFailedBookings] = useState(0)
-
-  const { user } = useContext(AuthContext)
 
   const widgetChartRef1 = useRef(null)
   const widgetChartRef2 = useRef(null)
@@ -47,35 +45,35 @@ const WidgetsDropdown = (props) => {
     fetchDashboardMetrics()
   }, [widgetChartRef1, widgetChartRef2])
 
-  return user?.role === 'Admin' ? (
-    <CRow className={props.className} xs={{ gutter: 4 }}>
-      <CCol sm={6} md={4}>
-        <CWidgetStatsA
-          color="success"
-          className="pb-4"
-          value={dailyBookings}
-          title="Today's Bookings"
-        />
-      </CCol>
-      <CCol sm={6} md={4}>
-        <CWidgetStatsA
-          color="primary"
-          className="pb-4"
-          value={`৳ ${Math.round(dailyCODAmount)}`}
-          title="Today's Income"
-        />
-      </CCol>
-      <CCol sm={6} md={4}>
-        <CWidgetStatsA
-          color="danger"
-          className="pb-4"
-          value={failedBookings}
-          title="Total Failed Deliveries"
-        />
-      </CCol>
-    </CRow>
-  ) : (
-    <p></p>
+  return (
+    <RequireRole allowedRoles={['Admin']}>
+      <CRow className={props.className} xs={{ gutter: 4 }}>
+        <CCol sm={6} md={4}>
+          <CWidgetStatsA
+            color="success"
+            className="pb-4"
+            value={dailyBookings}
+            title="Today's Bookings"
+          />
+        </CCol>
+        <CCol sm={6} md={4}>
+          <CWidgetStatsA
+            color="primary"
+            className="pb-4"
+            value={`৳ ${Math.round(dailyCODAmount)}`}
+            title="Today's Income"
+          />
+        </CCol>
+        <CCol sm={6} md={4}>
+          <CWidgetStatsA
+            color="danger"
+            className="pb-4"
+            value={failedBookings}
+            title="Total Failed Deliveries"
+          />
+        </CCol>
+      </CRow>
+    </RequireRole>
   )
 }
 

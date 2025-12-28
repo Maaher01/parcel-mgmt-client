@@ -1,9 +1,14 @@
 import React, { Suspense, useEffect } from 'react'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import ProtectedRoute from './routes/ProtectedRoute'
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+// Public and Protected Routes
+import ProtectedRoute from './routes/ProtectedRoute'
+import PublicRoute from './routes/PublicRoute'
 
 // Contexts
 import { AuthProvider } from './context/AuthContext'
@@ -45,13 +50,30 @@ const App = () => {
       >
         <AuthProvider>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
             <Route path="/register" element={<Register />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/*" element={<DefaultLayout />} />
             </Route>
             <Route path="*" element={<Page404 />} />
           </Routes>
+
+          {/* Toast container */}
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            pauseOnHover
+          />
         </AuthProvider>
       </Suspense>
     </HashRouter>

@@ -16,6 +16,7 @@ export const Navigation = () => {
       name: 'Dashboard',
       to: '/dashboard',
       icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+      roles: ['Admin', 'Customer', 'Delivery Agent'],
     },
     {
       component: CNavGroup,
@@ -31,7 +32,7 @@ export const Navigation = () => {
         {
           component: CNavItem,
           name: 'My Bookings',
-          to: '/booking',
+          to: '/my-bookings',
         },
       ],
     },
@@ -40,24 +41,28 @@ export const Navigation = () => {
       name: 'Agent Assign',
       to: '/created-bookings',
       icon: <CIcon icon={cilBike} customClassName="nav-icon" />,
+      roles: ['Admin'],
     },
     {
       component: CNavItem,
       name: 'User Directory',
       to: '/users',
       icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+      roles: ['Admin'],
     },
     {
       component: CNavItem,
       name: 'All Bookings',
       to: '/bookings',
       icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+      roles: ['Admin'],
     },
     {
       component: CNavItem,
       name: 'Assigned Parcels',
       to: '/assigned-parcels',
       icon: <CIcon icon={cilInbox} customClassName="nav-icon" />,
+      roles: ['Delivery Agent'],
     },
   ]
 

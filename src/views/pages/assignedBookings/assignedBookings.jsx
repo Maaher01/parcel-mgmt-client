@@ -23,6 +23,13 @@ import { baseUrl } from '../../../api/api'
 import { format } from 'date-fns'
 import { startTracking, stopTracking } from '../../../utils/tracking'
 import AuthContext from '../../../context/AuthContext'
+import { io } from 'socket.io-client'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+const socket = io('http://localhost:8000', {
+  transports: ['websocket', 'polling', 'transport'],
+})
 
 const AssignedBookings = () => {
   const [bookings, setBookings] = useState([])
@@ -60,7 +67,7 @@ const AssignedBookings = () => {
         startTracking(selectedBookingId, token)
       }
 
-      // Optionally stop tracking when DELIVERED or CANCELLED
+      // Stop tracking when DELIVERED or CANCELLED
       if (['DELIVERED', 'CANCELLED'].includes(bookingStatus)) {
         stopTracking()
       }
@@ -74,6 +81,29 @@ const AssignedBookings = () => {
   useEffect(() => {
     fetchAssignedBookings()
   }, [])
+
+  useEffect(() => {
+    bookings.forEach((b) => {
+      socket.emit('join-booking', b.bookingId)
+    })
+
+    socket.on('booking-status-updated', (data) => {
+      setBookings((prev) =>
+        prev.map((b) =>
+          b.bookingId === data.bookingId ? { ...b, bookingStatus: data.bookingStatus } : b,
+        ),
+      )
+
+      toast.info(`Booking ${data.booking_id} status updated: ${data.booking_status}`, {
+        position: 'top-right',
+        autoClose: 5000,
+      })
+    })
+
+    return () => {
+      socket.off('booking-status-updated')
+    }
+  }, [bookings])
 
   if (loading) return <CircularProgress />
   if (error) return <Alert severity="error">{error}</Alert>

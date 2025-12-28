@@ -31,7 +31,8 @@ export function startTracking(bookingId, token) {
     },
     {
       enableHighAccuracy: false,
-      timeout: 3000,
+      timeout: 10000,
+      maximumAge: 5000,
     },
   )
 }

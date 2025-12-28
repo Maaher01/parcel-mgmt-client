@@ -15,6 +15,7 @@ import { baseUrl } from '../../../api/api'
 import { useParams } from 'react-router-dom'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
+import { Link } from 'react-router-dom'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -205,9 +206,11 @@ const BookingDetails = () => {
 
           {/* Back Button */}
           <Box display="flex" justifyContent="flex-end" mt={3}>
-            <Button variant="contained" color="primary" href="/agent/assigned-bookings">
-              Back to Bookings
-            </Button>
+            <Link to="/my-bookings">
+              <Button variant="contained" color="primary">
+                Back to Bookings
+              </Button>
+            </Link>
           </Box>
         </CardContent>
       </Card>

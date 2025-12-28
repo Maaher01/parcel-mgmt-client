@@ -13,7 +13,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/booking/add', name: 'New Booking', element: newBooking },
-  { path: '/booking', name: 'My Bookings', element: myBookings },
+  { path: '/my-bookings', name: 'My Bookings', element: myBookings },
   { path: '/created-bookings', name: 'Created Bookings', element: createdBookings },
   { path: '/users', name: 'All Users List', element: allUsersList },
   { path: '/bookings', name: 'All Bookings List', element: allBookingsList },

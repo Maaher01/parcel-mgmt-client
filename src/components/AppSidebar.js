@@ -8,10 +8,9 @@ import {
   CSidebarFooter,
   CSidebarHeader,
 } from '@coreui/react'
-
 import { AppSidebarNav } from './AppSidebarNav'
-
-// import logo from 'src/assets/icons/logo.png'
+import AuthContext from '../context/AuthContext'
+import { useContext } from 'react'
 
 // sidebar nav config
 import { Navigation } from '../_nav'
@@ -21,7 +20,11 @@ const AppSidebar = () => {
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
-  const navItems = Navigation()
+  const { user } = useContext(AuthContext)
+
+  if (!user) return null
+
+  const navItems = Navigation().filter((item) => !item.roles || item.roles.includes(user?.role))
 
   return (
     <CSidebar
@@ -36,7 +39,7 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarHeader className="border-bottom">
-        <CSidebarBrand to="/">{/* <img src={logo} height={44} /> */}</CSidebarBrand>
+        <CSidebarBrand to="/"></CSidebarBrand>
         <CCloseButton
           className="d-lg-none"
           dark

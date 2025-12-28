@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { jwtDecode } from 'jwt-decode'
 
@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     return localStorage.getItem('isLoggedIn') === 'true'
   })
   const [token, setToken] = useState(() => localStorage.getItem('token') || null)
+  const [loading, setLoading] = useState(false)
 
   const login = (authToken) => {
     localStorage.setItem('isLoggedIn', 'true')
@@ -29,8 +30,19 @@ export const AuthProvider = ({ children }) => {
     navigate('/login')
   }
 
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      const decoded = jwtDecode(token)
+      setUser(decoded.UserInfo)
+    }
+
+    setLoading(false)
+  }, [])
+
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login, logout, token }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, login, logout, token, setUser }}>
       {children}
     </AuthContext.Provider>
   )
