@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState, useContext } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { CRow, CCol, CWidgetStatsA } from '@coreui/react'
+import { CRow, CCol, CWidgetStatsA, CSpinner } from '@coreui/react'
 import { getStyle } from '@coreui/utils'
 import { baseUrl } from '../../api/api'
 import RequireRole from '../../routes/RequireRole'
 
 const WidgetsDropdown = (props) => {
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
   const [dailyCODAmount, setDailyCODAmount] = useState(0)
   const [dailyBookings, setDailyBookings] = useState(0)
   const [failedBookings, setFailedBookings] = useState(0)
@@ -33,12 +34,15 @@ const WidgetsDropdown = (props) => {
 
     const fetchDashboardMetrics = async () => {
       try {
+        setLoading(true)
         const response = await baseUrl.get(`/admin/dashboard-metrics`)
         setDailyCODAmount(response.data.data.getDailyCODAmount)
         setDailyBookings(response.data.data.getDailyBookings)
         setFailedBookings(response.data.data.getFailedBookings)
       } catch (err) {
         setError('Failed to fetch metrics')
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -52,7 +56,7 @@ const WidgetsDropdown = (props) => {
           <CWidgetStatsA
             color="success"
             className="pb-4"
-            value={dailyBookings}
+            value={loading ? <CSpinner size="sm" /> : dailyBookings}
             title="Today's Bookings"
           />
         </CCol>
@@ -60,7 +64,7 @@ const WidgetsDropdown = (props) => {
           <CWidgetStatsA
             color="primary"
             className="pb-4"
-            value={`৳ ${Math.round(dailyCODAmount)}`}
+            value={loading ? <CSpinner size="sm" /> : `৳ ${Math.round(dailyCODAmount)}`}
             title="Today's Income"
           />
         </CCol>
@@ -68,7 +72,7 @@ const WidgetsDropdown = (props) => {
           <CWidgetStatsA
             color="danger"
             className="pb-4"
-            value={failedBookings}
+            value={loading ? <CSpinner size="sm" /> : failedBookings}
             title="Total Failed Deliveries"
           />
         </CCol>
