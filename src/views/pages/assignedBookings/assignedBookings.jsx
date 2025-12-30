@@ -17,6 +17,7 @@ import {
   Button,
   Menu,
   MenuItem,
+  Stack,
 } from '@mui/material'
 import { useEffect, useState, useContext } from 'react'
 import { baseUrl } from '../../../api/api'
@@ -26,6 +27,7 @@ import AuthContext from '../../../context/AuthContext'
 import { io } from 'socket.io-client'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Link } from 'react-router-dom'
 
 const socket = io('http://localhost:8000', {
   transports: ['websocket', 'polling', 'transport'],
@@ -111,7 +113,7 @@ const AssignedBookings = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: 5 }}>
       <Card>
-        <CardHeader title="My Assigned Parcels" />
+        <CardHeader title="Assigned Parcels" />
         <CardContent>
           <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
             <Table sx={{ minWidth: 900 }}>
@@ -164,17 +166,29 @@ const AssignedBookings = () => {
                   bookings.map((booking) => (
                     <TableRow key={booking.bookingId} hover>
                       <TableCell>
-                        <Button
-                          size="small"
-                          variant="contained"
-                          onClick={(e) => {
-                            setAnchorEl(e.currentTarget)
-                            setSelectedBookingId(booking.bookingId)
-                          }}
-                          disabled={booking.bookingStatus === 'DELIVERED'}
-                        >
-                          Change Status
-                        </Button>
+                        <Stack direction="row" spacing={1}>
+                          <Button
+                            size="small"
+                            variant="contained"
+                            onClick={(e) => {
+                              setAnchorEl(e.currentTarget)
+                              setSelectedBookingId(booking.bookingId)
+                            }}
+                            disabled={booking.bookingStatus === 'DELIVERED'}
+                          >
+                            Change Status
+                          </Button>
+                          <Link to={`/optimized-route/${booking.bookingId}`}>
+                            <Button
+                              size="small"
+                              variant="contained"
+                              color="warning"
+                              disabled={booking.bookingStatus === 'CREATED'}
+                            >
+                              View Optimized Route
+                            </Button>
+                          </Link>
+                        </Stack>
 
                         <Menu anchorEl={anchorEl} open={menuOpen} onClose={() => setAnchorEl(null)}>
                           <MenuItem onClick={() => handleStatusUpdate('PICKED_UP')}>

@@ -37,7 +37,8 @@ Then, run `npm run start` to start the app.
 - React
 - React Router
 - Socket.IO Client
-- Leaflet (OpenStreetMap)
+- Leaflet
+- OpenStreetMap + OSRM
 
 ### Tools
 
@@ -78,6 +79,9 @@ Each role has separate permissions enforced through role-based middleware.
   - Delivered
   - Cancelled
 - Share live location via coordinates
+- View optimized delivery route (based on approximate area-level locations. Due to limitations of free geocoding and map data:
+  Exact house-level addresses are not always accurately displayed
+  The feature works best for area-to-area navigation, not precise doorstep routing. This limitation is acknowledged and documented as a known constraint of the system)
 
 ---
 

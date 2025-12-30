@@ -23,6 +23,7 @@ export const Navigation = () => {
       name: 'Booking',
       to: '/base',
       icon: <CIcon icon={cilBookmark} customClassName="nav-icon" />,
+      roles: ['Customer'],
       items: [
         {
           component: CNavItem,

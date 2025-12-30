@@ -28,7 +28,7 @@ const NewBooking = () => {
         sizeType: values.sizeType,
       })
 
-      navigate('/')
+      navigate('/my-bookings')
     } catch (err) {
       console.error('Error:', err)
       setError('Failed to create booking')

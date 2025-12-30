@@ -43,8 +43,6 @@ const BookingDetails = () => {
   const getBookingDetails = async () => {
     try {
       const response = await baseUrl.get(`/booking/${bookingId}`)
-      console.log(response.data.data)
-
       setBooking(response.data.data)
     } catch (err) {
       console.log(err.message)
@@ -79,20 +77,24 @@ const BookingDetails = () => {
                 boxShadow: 1,
               }}
             >
-              <MapContainer
-                center={[booking.latitude, booking.longitude]}
-                zoom={18}
-                style={{ height: '100%', width: '100%' }}
-              >
-                <TileLayer
-                  attribution="&copy; OpenStreetMap contributors"
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+              {booking.latitude !== null && booking.longitude !== null ? (
+                <MapContainer
+                  center={[booking.latitude, booking.longitude]}
+                  zoom={18}
+                  style={{ height: '100%', width: '100%' }}
+                >
+                  <TileLayer
+                    attribution="&copy; OpenStreetMap contributors"
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
 
-                <Marker position={[booking.latitude, booking.longitude]}>
-                  <Popup>Parcel current location</Popup>
-                </Marker>
-              </MapContainer>
+                  <Marker position={[booking.latitude, booking.longitude]}>
+                    <Popup>Parcel current location</Popup>
+                  </Marker>
+                </MapContainer>
+              ) : (
+                <p>Location not available. Agent not assigned yet.</p>
+              )}
             </Box>
           </Box>
 
@@ -127,11 +129,11 @@ const BookingDetails = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <Typography variant="subtitle2">Agent Name</Typography>
-                <Typography variant="body1">{booking.agentName || 'N/A'}</Typography>
+                <Typography variant="body1">{booking.agentName || 'Not Assigned'}</Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography variant="subtitle2">Agent Phone</Typography>
-                <Typography variant="body1">{booking.agentPhone || 'N/A'}</Typography>
+                <Typography variant="body1">{booking.agentPhone || 'Not Assigned'}</Typography>
               </Grid>
             </Grid>
           </Box>

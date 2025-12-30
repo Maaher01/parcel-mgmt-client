@@ -91,8 +91,6 @@ const AllBookingsList = () => {
     try {
       setLoading(true)
       const response = await baseUrl.get('/admin/bookings')
-      console.log(response.data.data)
-
       setBookings(response.data.data)
     } catch (err) {
       setError('Failed to fetch bookings')

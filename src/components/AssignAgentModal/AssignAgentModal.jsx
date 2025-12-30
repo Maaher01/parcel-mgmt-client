@@ -26,8 +26,6 @@ const AssignAgentModal = ({ open, bookingId, onClose, onAssigned }) => {
     const fetchAgents = async () => {
       try {
         const res = await baseUrl.get('/admin/agents')
-        console.log(res.data.data)
-
         setAgents(res.data.data)
       } catch {
         setError('Failed to load agents')
