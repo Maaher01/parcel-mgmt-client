@@ -14,6 +14,7 @@ import {
   CircularProgress,
   Alert,
   IconButton,
+  Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { baseUrl } from '../../../api/api'
