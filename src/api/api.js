@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const baseUrl = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: 'https://parcel-mgmt-server-vercel.vercel.app/api',
 })
 
 baseUrl.interceptors.request.use(
